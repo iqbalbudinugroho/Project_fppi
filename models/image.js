@@ -4,5 +4,7 @@ const mongoose = require('mongoose');
 const Imageschema = new mongoose.Schema({
     filename: String,
     path: String,
-    uploadedAt: { type: date, default: date.now}
-})
+   uploadedAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model('Image', Imageschema);
