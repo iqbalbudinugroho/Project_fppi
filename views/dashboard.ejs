@@ -1,0 +1,22 @@
+<h2>Dashboard Admin</h2>
+
+<form action="/dashboard/upload" method="POST" enctype="multipart/form-data">
+    <textarea type="text" name="title" placeholder="judul Kegiatan"required>
+        <input type="file" name="image" required>
+        <button type="submit">Posting</button>
+    </textarea>
+</form>
+
+<hr>
+
+<h3>Daftar Postingan</h3>
+<% post.forEach(post => { %>
+<div>
+    <h4><%= post.title %></h4>
+    <p><%= post.description %></p>
+    <img src="<%= post.image.Path %>"width="200">
+    <form action="/dashboard/delete/<%= post._id %>" method="POST">
+        <button type="submit">Hapus</button>
+    </form>
+</div>})
+<% }) %>
