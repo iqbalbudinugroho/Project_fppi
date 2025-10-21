@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const Image = require('./models/Image');
 const { get } = require('express/lib/response');
-
+const Post = require('./models/Post');
 const app = express();
 
 mongoose.set('strictQuery', false);
@@ -41,6 +41,32 @@ app.get('/admin', (req, res) => {
 res.render('admin');
 });
 
+const post = require('./models/Post');
+const req = require('express/lib/request');
+const res = require('express/lib/response');
+
+app.get('/dashboard', async (req, res) => {
+    const Post = await Post.find().sort({ createdAt: -1});
+    res.render('dashboard', { posts });
+});
+
+app.post('/dashboard/upload', upload.single('image'), async (req, res) => {
+    const newPost = new Post({
+        title: req.body.title,
+        description: req.body.description,
+        imagePath: '/uploads' + req.file.filename
+    });
+    await newPost.save();
+    res.redirect('/dashboard');
+});
+
+app.post('/dashboard/delete/:id', async (req, res) => {
+    await Post.findByIdAndDelete(req.params.id);
+    res.redirect('/dashboard');
+});
+
+
+
 app.post('/upload', upload.single('image'), async (req, res) => {
 const newImage = new Image({
     filename: req.file.filename,
@@ -50,7 +76,7 @@ await newImage.save();
 res.redirect('/');
 });
 
-app,get('/', async (req, res) => {
+app.get('/', async (req, res) => {
     const image = await Image.findOne().sort({ uploadedAt: -1});
     res.render('index', { image});
 });
