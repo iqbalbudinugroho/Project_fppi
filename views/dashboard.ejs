@@ -37,6 +37,11 @@
                     <li class="nav-item"><a class="nav-link" href="/event">Event</a></li>
                     <li class="nav-item"><a class="nav-link" href="/konten">Konten</a></li>
                     <li class="nav-item"><a class="nav-link" href="/kode">Kode</a></li>
+                    <li class="nav-item">
+                        <form action="/logout" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-outline-light btn-sm ms-2">Logout</button>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -51,7 +56,7 @@
     <!-- Main Content -->
     <div class="container mt-4">
 
-        <!-- Upload Gambar Baru -->
+        <!-- bagian untuk  Upload Gambar Baru -->
         <div class="card p-4">
             <h3 class="mb-3">Upload Gambar Baru</h3>
             <form action="/upload" method="POST" enctype="multipart/form-data">
