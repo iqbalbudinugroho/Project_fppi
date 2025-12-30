@@ -4,15 +4,13 @@ const multer = require('multer');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const Image = require('./models/image');
+const apiRoutes = require('./routes/api');
 const Post = require('./models/Post');
 const User = require('./models/User');
 const app = express();
 
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb://localhost:27017/', {
-useNewUrlParser: true,
-useUnifiedTopology: true
-});
+mongoose.connect('mongodb://localhost:27017/');
 
 mongoose.connection.on('connected', () => {
 console.log('✅ MongoDB connected');
@@ -27,9 +25,9 @@ mongoose.connection.once('open', async () => {
     try {
         const existingUser = await User.findOne({ username: 'admin' });
         if (!existingUser) {
-            const user = new User({ username: 'admin', password: 'admin123' });
+            const user = new User({ username: 'admin', password: 'ResearchForum$2024!Ilmiah' });
             await user.save();
-            console.log('✅ Default admin user created: username: admin, password: admin123');
+            console.log('✅ Default admin user created: username: admin, password: ResearchForum$2024!Ilmiah');
         }
     } catch (error) {
         console.error('❌ Error seeding default admin user:', error);
@@ -64,6 +62,9 @@ destination: (req, file, cb) => cb(null, 'public/uploads'),
 filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
 });
 const upload = multer({ storage });
+
+// api routes
+app.use('/api', apiRoutes);
 
 
 app.get('/', async (req, res) => {
